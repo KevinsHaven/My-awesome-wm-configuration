@@ -1,0 +1,26 @@
+# Dont print a new line at the start of the prompt
+add_newline = false
+
+# Replace the ")" symbol in the prompt with "➜"
+[character]				# The name of the module we are configuring is "character"
+success_symbol = "[➜](bold green)"	# The "success_symbol" segment is being set to "➜"
+error_symbol = "[➜](bold red)"
+
+# Use custom format
+format = """
+[┌───────────────────>](bold green)
+[│](bold green)$directory$rust$package
+[└─>](bold green) """
+
+# Disable the package module, hiding it from the promp completely
+[package]
+disabled = true
+
+# Show duration
+[cmd_duration]
+format = "took [$duration](bold yellow)"
+
+# Show directory
+[directory]
+truncation_length = 8
+truncation_symbol = ".../"
