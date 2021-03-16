@@ -36,8 +36,9 @@ if (command -v system-config-printer-applet && ! pgrep applet.py ); then
   system-config-printer-applet &
 fi
 
-run compton --shadow-exclude '!focused'
+run picom
 run blueman-applet
 run msm_notifier
+run discord --no-sandbox
 nitrogen --restore
 xrandr --output HDMI-A-1 --left-of DisplayPort-0

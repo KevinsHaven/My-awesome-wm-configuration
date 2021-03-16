@@ -29,17 +29,23 @@ theme = 'nord',
 placement = 'top_right',
 radius = 8,
 })
-
 local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
-
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local volume_widget_widget = volume_widget({display_notification = true})
-
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
-
 local net_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
+
+------
+-- Widget callings by Vicious
+------
+local vicious = require("vicious")
+
+------
+-- Icon callings
+-----
+local icons = {}
+icons.cpu = "~/.config/awesome/icons/cpu.png"
 
 -- Enable VIM help for hotkeys widget when client with matching name is opened:
 require("awful.hotkeys_popup.keys.vim")
@@ -162,7 +168,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- {{{ Wibar
+-------------- {{{ Wibar -----------------------------------------
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%d/%m/%Y|%I:%M %p")
 mytextclock:connect_signal("button::press", 
@@ -171,6 +177,12 @@ mytextclock:connect_signal("button::press",
     end)
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
+
+-- CPU vicious --
+cpuwidget = wibox.widget.textbox(" ")
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1%  ", 3)
+cpuicon = wibox.widget.imagebox(icons.cpu)
+
 
 darkblue    = beautiful.bg_focus
 blue        = "#9EBABA"
@@ -282,6 +294,8 @@ awful.screen.connect_for_each_screen(function(s)
 		  colors = {'#434c5e', '#434c5e', '#434c5e'},
 	    }),
 	    separator,
+	    cpuicon,
+	    cpuwidget,
 	    cpu_widget({
 		    width = 70,
 		    step_width = 2,
@@ -384,8 +398,6 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)           end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey     }, "b", function () awful.spawn(browser)          end,
-              {description = "launch Browser", group = "launcher"}),
     awful.key({ modkey, "Control"}, "Escape", function () awful.spawn("/usr/bin/rofi -show drun -modi drun") end,
               {description = "launch rofi", group = "launcher"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                       end,
@@ -707,4 +719,4 @@ end
 
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
-beautiful.useless_gap = 5
+beautiful.useless_gap = 7
